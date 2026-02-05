@@ -351,6 +351,15 @@ final usersTable = Table<User>(
 - `paranoid`: Enable/disable soft deletes
 - `primaryKey`: Name of primary key column (default: 'id')
 
+#### Indexes & CHECK constraints
+
+Define indexes to speed up queries and CHECK constraints to enforce simple domain rules at the database level.
+
+- **Indexes:** Improve lookup performance for frequent WHERE, JOIN, and ORDER BY columns. Example: create an index on `email` for fast uniqueness checks and lookups.
+- **CHECK constraints:** Enforce allowed values or simple validation (e.g., `gender IN ('M','F','Other')`). CHECK keeps invalid data out of the table and centralizes validation logic.
+
+When designing your schema, add indexes for columns you filter or sort by often, and use `CHECK` for small, immutable domain rules. Both features are supported by the runtime and are included in the sample `users` table used in tests.
+
 ### DatabaseService<T>: Main CRUD Service
 
 The core service providing all database operations.
