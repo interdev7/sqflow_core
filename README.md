@@ -1,8 +1,8 @@
 # 🚀 SqFlow (core)
 
-<p align="center" style="padding-top: 50px">
-  <image src="https://github.com/interdev7/sqflow/blob/main/assets/logos/sqflow.png" alt="SqFlow" width="300"/>
-</p>
+<div style="padding-top: 50px;" align="center">
+  <image src="https://github.com/interdev7/sqflow/blob/main/assets/logos/sqflow_logo.png"  alt="SqFlow" height="300" />
+</div>
 
 ### 😎 Make your SQLite queries flow effortlessly
 
