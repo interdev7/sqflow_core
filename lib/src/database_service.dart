@@ -71,7 +71,7 @@ class DatabaseService<T extends Model> {
   ///
   /// **Example:**
   /// ```dart
-  /// final id = await userService.insertAsync(User(id: '1', name: 'Anton'));
+  /// final id = await userService.insertAsync(User(id: '1', name: 'John'));
   /// print('Inserted ID: $id');
   /// ```
   Future<int> insertAsync(T item) async {
@@ -98,7 +98,7 @@ class DatabaseService<T extends Model> {
   ///
   /// **Example:**
   /// ```dart
-  /// final rows = await userService.updateAsync(User(id: '1', name: 'Anton Updated'));
+  /// final rows = await userService.updateAsync(User(id: '1', name: 'John Updated'));
   /// print('Updated rows: $rows');
   /// ```
   Future<int> updateAsync(T item) async {
@@ -351,7 +351,7 @@ class DatabaseService<T extends Model> {
   /// final result = await userService.readAll(
   ///   limit: 10,
   ///   offset: 0,
-  ///   where: WhereBuilder().like('name', '%Anton%'),
+  ///   where: WhereBuilder().like('name', '%John%'),
   ///   sort: SortBuilder().asc('name')
   /// );
   /// print('Total: ${result.count}, Items: ${result.data.length}');
@@ -396,8 +396,8 @@ class DatabaseService<T extends Model> {
   /// **Example:**
   /// ```dart
   /// await userService.transaction((txn) async {
-  ///   await txn.insert('users', {'id': '1', 'name': 'Anton'});
-  ///   await txn.update('users', {'name': 'Anton Updated'}, where: 'id = ?', whereArgs: ['1']);
+  ///   await txn.insert('users', {'id': '1', 'name': 'John'});
+  ///   await txn.update('users', {'name': 'John Updated'}, where: 'id = ?', whereArgs: ['1']);
   /// });
   /// ```
   Future<R> transaction<R>(Future<R> Function(Transaction txn) action) async {

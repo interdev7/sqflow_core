@@ -337,7 +337,7 @@ void main() {
       // --- v1 ---
       var dbv1 = DB(databaseName: dbFileName, version: 1, tables: [usersV1]);
       final databaseV1 = await dbv1.database;
-      await databaseV1.insert('users', {'id': '1', 'name': 'Anton', 'created_at': DateTime.now().toIso8601String()});
+      await databaseV1.insert('users', {'id': '1', 'name': 'John', 'created_at': DateTime.now().toIso8601String()});
       await dbv1.close();
 
       // Small delay for FFI to ensure file is released
@@ -351,7 +351,7 @@ void main() {
 
       // Verify data persists
       final rows = await databaseV2.query('users', where: 'id = ?', whereArgs: ['1']);
-      expect(rows.first['name'], 'Anton');
+      expect(rows.first['name'], 'John');
 
       // Verify new column exists
       final tableInfo = await databaseV2.rawQuery('PRAGMA table_info(users)');

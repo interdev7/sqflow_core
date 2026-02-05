@@ -219,7 +219,7 @@ Now use CRUD operations:
 // Insert a new user
 final newUser = User(
   id: 'user_001',
-  name: 'Anton',
+  name: 'John',
   age: 30,
   isActive: true,
   createdAt: DateTime.now(),
@@ -229,11 +229,11 @@ await userService.insertAsync(newUser);
 
 // Read by ID
 final user = await userService.readAsync('user_001');
-print(user?.name);  // 'Anton'
+print(user?.name);  // 'John'
 
 // Update
 if (user != null) {
-  final updatedUser = user.copyWith(name: 'Anton Updated');
+  final updatedUser = user.copyWith(name: 'John Updated');
   await userService.updateAsync(updatedUser);
 }
 
@@ -243,7 +243,7 @@ await userService.deleteAsync('user_001');
 // Query with filters and pagination
 final results = await userService.readAll(
   where: WhereBuilder()
-    .ilike('name', '%Ant%')
+    .ilike('name', '%Joh%')
     .isTrue('is_active'),
   sort: SortBuilder()
     .asc('name')
@@ -844,6 +844,7 @@ final db = DB.autoVersion(databaseName: 'app.db', tables: [usersWithMigrations])
 ```
 
 **Migration Tips:**
+
 - Always test migrations with real data
 - Use transactions for multi-step migrations
 - Consider backup before major changes
