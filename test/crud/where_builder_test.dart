@@ -75,6 +75,29 @@ void main() {
       expect(where.args, [3, 'S']);
     });
 
+    test('LENGTH and SUBSTR helper methods', () {
+      final where = WhereBuilder()
+          .lengthEq('first_name', 5)
+          .lengthNe('last_name', 3)
+          .lengthGt('nickname', 2)
+          .lengthGte('alias', 4)
+          .lengthLt('short', 10)
+          .lengthLte('tiny', 1)
+          .substrEq('last_name', 1, 1, 'S')
+          .substrLike('email', 1, 3, '%@g')
+          .substrIlike('first_name', 1, 2, 'jo');
+
+      expect(
+        where.build(),
+        'LENGTH(first_name) = ? AND LENGTH(last_name) != ? AND LENGTH(nickname) > ? AND LENGTH(alias) >= ? AND LENGTH(short) < ? AND LENGTH(tiny) <= ? AND SUBSTR(last_name, ?, ?) = ? AND SUBSTR(email, ?, ?) LIKE ? AND LOWER(SUBSTR(first_name, ?, ?)) LIKE LOWER(?)',
+      );
+
+      expect(
+        where.args,
+        [5, 3, 2, 4, 10, 1, 1, 1, 'S', 1, 3, '%@g', 1, 2, 'jo'],
+      );
+    });
+
     test('hasConditionOn check', () {
       final where = WhereBuilder().eq('age', 25).like('email', '%@gmail.com').orGroup((og) {
         og.eq('city', 'Sofia').eq('city', 'Plovdiv');

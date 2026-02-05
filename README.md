@@ -302,7 +302,10 @@ final database = await dbManager.database;
 await dbManager.close();
 ```
 
-**Properties:** -`databaseName`: File name for SQLite database -`version`: Schema version for migrations
+**Properties:**
+
+- `databaseName`: File name for SQLite database
+- `version`: Schema version for migrations
 
 ### Model: Base Model Interface
 
@@ -315,10 +318,16 @@ abstract class Model {
 }
 ```
 
-**Required:** -`id` getter - Unique identifier (String, int, etc.) -`toJson()` method - Serializes to database format
+**Required:**
 
-**Recommended:** -`fromJson` factory - For deserialization
--Timestamp fields: `createdAt`, `updatedAt`, `deletedAt` -`copyWith()` method - For immutable updates
+- `id` getter - Unique identifier (String, int, etc.)
+- `toJson()` method - Serializes to database format
+
+**Recommended:**
+
+- `fromJson` factory - For deserialization
+- Timestamp fields: `createdAt`, `updatedAt`, `deletedAt`
+- `copyWith()` method - For immutable updates
 
 ### Table<T>: Table Configuration
 
@@ -334,7 +343,13 @@ final usersTable = Table<User>(
 );
 ```
 
-**Parameters:** -`name`: Table name -`schema`: Complete CREATE TABLE SQL statement -`fromJson`: Factory to create model from database row -`paranoid`: Enable/disable soft deletes -`primaryKey`: Name of primary key column (default: 'id')
+**Parameters:**
+
+- `name`: Table name
+- `schema`: Complete CREATE TABLE SQL statement
+- `fromJson`: Factory to create model from database row
+- `paranoid`: Enable/disable soft deletes
+- `primaryKey`: Name of primary key column (default: 'id')
 
 ### DatabaseService<T>: Main CRUD Service
 
@@ -493,6 +508,30 @@ final where = WhereBuilder()
 .where.raw('LENGTH(name) > ?', [3]);  // LENGTH(name) > ?
 ```
 
+#### String Functions (LENGTH, SUBSTR)
+
+Convenience helpers for common string-based conditions. These produce parameterized SQL using `LENGTH(...)` and `SUBSTR(...)` and keep argument ordering safe.
+
+Examples:
+
+```dart
+// LENGTH helpers
+WhereBuilder().lengthEq('first_name', 5);        // LENGTH(first_name) = ?
+WhereBuilder().lengthGt('nickname', 2);         // LENGTH(nickname) > ?
+
+// SUBSTR helpers (start, length, value)
+WhereBuilder().substrEq('last_name', 1, 1, 'S'); // SUBSTR(last_name, ?, ?) = ?
+WhereBuilder().substrLike('email', 1, 3, '%@g'); // SUBSTR(email, ?, ?) LIKE ?
+WhereBuilder().substrIlike('first_name', 1, 2, 'jo'); // LOWER(SUBSTR(first_name, ?, ?)) LIKE LOWER(?)
+
+// Use them in readAll queries
+final result = await service.readAll(
+  where: WhereBuilder()
+    .lengthGt('first_name', 4)
+    .substrLike('email', 1, 3, '%@g'),
+);
+```
+
 #### Utilities
 
 ```dart
@@ -574,7 +613,7 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^latest
-  # sqflow_generator usually comes via git or local path in this context
+
   sqflow_generator: ^latest
 ```
 

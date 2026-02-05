@@ -280,6 +280,76 @@ class WhereBuilder {
   }
 
   // =======================================================
+  // STRING FUNCTIONS (LENGTH, SUBSTR)
+  // =======================================================
+
+  /// Adds condition on the length of a column: `LENGTH(column) = ?`
+  WhereBuilder lengthEq(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) = ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds condition on the length of a column: `LENGTH(column) != ?`
+  WhereBuilder lengthNe(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) != ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds greater-than condition on the length: `LENGTH(column) > ?`
+  WhereBuilder lengthGt(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) > ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds greater-than-or-equal condition on the length: `LENGTH(column) >= ?`
+  WhereBuilder lengthGte(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) >= ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds less-than condition on the length: `LENGTH(column) < ?`
+  WhereBuilder lengthLt(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) < ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds less-than-or-equal condition on the length: `LENGTH(column) <= ?`
+  WhereBuilder lengthLte(String column, int length) {
+    _validate(column);
+    _addCondition('LENGTH($column) <= ?', [_prepareValue(length)], column);
+    return this;
+  }
+
+  /// Adds SUBSTR equality: `SUBSTR(column, start, len) = ?`
+  ///
+  /// `start` and `len` are passed as parameters to preserve ordering
+  /// and avoid embedding literals directly into SQL.
+  WhereBuilder substrEq(String column, int start, int len, String value) {
+    _validate(column);
+    _addCondition('SUBSTR($column, ?, ?) = ?', [_prepareValue(start), _prepareValue(len), _prepareValue(value)], column);
+    return this;
+  }
+
+  /// Adds SUBSTR LIKE condition: `SUBSTR(column, start, len) LIKE ?`
+  WhereBuilder substrLike(String column, int start, int len, String pattern) {
+    _validate(column);
+    _addCondition('SUBSTR($column, ?, ?) LIKE ?', [_prepareValue(start), _prepareValue(len), pattern], column);
+    return this;
+  }
+
+  /// Adds case-insensitive SUBSTR LIKE: `LOWER(SUBSTR(column, start, len)) LIKE LOWER(?)`
+  WhereBuilder substrIlike(String column, int start, int len, String pattern) {
+    _validate(column);
+    _addCondition('LOWER(SUBSTR($column, ?, ?)) LIKE LOWER(?)', [_prepareValue(start), _prepareValue(len), pattern], column);
+    return this;
+  }
+
+  // =======================================================
   // RANGE & SET OPERATIONS (BETWEEN, IN, NOT IN)
   // =======================================================
 

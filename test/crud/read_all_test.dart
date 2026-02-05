@@ -76,6 +76,38 @@ void main() {
       }
     });
 
+    test('readAll with LENGTH and SUBSTR filters', () async {
+      initSqflite();
+      final service = await createTestService();
+
+      final result = await service.readAll(
+        where: WhereBuilder().lengthEq('first_name', 5).substrEq('last_name', 1, 1, 'S'),
+        limit: 50,
+      );
+
+      // Expect at least one match (James Smith - u001)
+      expect(result.count, greaterThanOrEqualTo(1));
+      final ids = result.data.map((e) => e.id).toList();
+      expect(ids, contains('u001'));
+    });
+
+    test('readAll with OR and AND group filters', () async {
+      initSqflite();
+      final service = await createTestService();
+
+      final where = WhereBuilder().andGroup((ag) {
+        ag.eq('country', 'Bulgaria').lengthGt('first_name', 4);
+      }).orGroup((og) {
+        og.substrLike('email', 1, 3, '%@g').eq('city', 'Varna');
+      });
+
+      final result = await service.readAll(where: where, limit: 50);
+
+      expect(result.count, greaterThanOrEqualTo(1));
+      final ids = result.data.map((e) => e.id).toList();
+      expect(ids, contains('u003'));
+    });
+
     test('Only deleted records', () async {
       // First mark some users as deleted
       await userService.deleteAsync('u001');
