@@ -1,4 +1,4 @@
-# 🚀 SqFlow (core)
+# 🚀 SQFlow (core)
 
 <div style="padding-top: 50px;" align="center">
   <image src="https://github.com/interdev7/sqflow/blob/main/assets/logos/sqflow_logo_screen.png"  alt="SqFlow"  />
